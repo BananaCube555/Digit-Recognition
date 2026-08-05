@@ -1,0 +1,9 @@
+
+Data (1797, 64)
+Weights shape (64, 32)
+Bias shape (1, 32)
+
+FOWARD PASS output shape (1797, 32)
+Weights shape (32,16)
+Bias shape (1,16)
+
