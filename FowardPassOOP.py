@@ -18,7 +18,15 @@ class Layer:
     
 def Relu(y):
     y = np.maximum(0,y)
-    return y        
+    return y  
+
+
+def SoftMax(x):
+    x = np.exp(x)
+    sums = np.sum(x, axis=1, keepdims=True)
+    x = x / sums
+        
+    return x
 
 l1 = Layer((64,32), (1,32))
 y1 = l1.Forward(norm_data)
@@ -29,3 +37,11 @@ l2 = Layer((32,16), (1,16))
 y2 = l2.Forward(y1)
 
 y2 = Relu(y2)
+
+l3 = Layer((16,10), (1,10))
+y3 = l3.Forward(y2)
+
+print(SoftMax(y3))
+
+# print(np.shape(y3))
+
