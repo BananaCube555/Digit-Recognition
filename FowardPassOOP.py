@@ -41,7 +41,10 @@ y2 = Relu(y2)
 l3 = Layer((16,10), (1,10))
 y3 = l3.Forward(y2)
 
-print(SoftMax(y3))
+y3 = (SoftMax(y3))
 
 # print(np.shape(y3))
 
+probs = SoftMax(y3) 
+
+print(probs[0])
