@@ -41,10 +41,26 @@ y2 = Relu(y2)
 l3 = Layer((16,10), (1,10))
 y3 = l3.Forward(y2)
 
-y3 = (SoftMax(y3))
+probs = SoftMax(y3)
 
-# print(np.shape(y3))
+# =========================
+# VISUALIZATION 
+# =========================
 
-probs = SoftMax(y3) 
 
-print(probs[0])
+prediction_probs = probs[0]
+prediction = np.argmax(prediction_probs) # Returns the index of the largest probability
+answer = digits.target[0] # Actual digit label for image 0
+
+# -- DISPLAY IMAGE --
+plt.imshow(digits.images[0], cmap='gray')
+plt.title(f"Prediction: {prediction}")
+plt.show()
+
+#  -- DISPLAY PREDICTIONS --
+categories = np.arange(0, 10) # Generates numbers from 0 to 9
+
+plt.bar(categories , prediction_probs)
+plt.title(f"Prediction: {prediction} Answer: {answer}")
+
+plt.show()
