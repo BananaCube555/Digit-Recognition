@@ -47,20 +47,31 @@ probs = SoftMax(y3)
 # VISUALIZATION 
 # =========================
 
+def create_prediction(index):
+    prediction_probs = probs[index]
+    prediction = np.argmax(prediction_probs) # Returns the index of the largest probability
+    answer = digits.target[index] # Actual digit label for image x
 
-prediction_probs = probs[0]
-prediction = np.argmax(prediction_probs) # Returns the index of the largest probability
-answer = digits.target[0] # Actual digit label for image 0
+    return prediction_probs, prediction, answer
 
 # -- DISPLAY IMAGE --
-plt.imshow(digits.images[0], cmap='gray')
-plt.title(f"Prediction: {prediction}")
-plt.show()
+def display_image(index, prediction, answer):
+    plt.imshow(digits.images[index], cmap='gray')
+    plt.title(f"Prediction: {prediction} Answer: {answer}")
+    plt.show()
+
 
 #  -- DISPLAY PREDICTIONS --
-categories = np.arange(0, 10) # Generates numbers from 0 to 9
+def display_predictions(prediction, predictions_probs, answer):
 
-plt.bar(categories , prediction_probs)
-plt.title(f"Prediction: {prediction} Answer: {answer}")
+    categories = np.arange(0, 10) # Generates numbers from 0 to 9
 
-plt.show()
+    plt.bar(categories , predictions_probs)
+    plt.title(f"Prediction: {prediction} Answer: {answer}")
+
+    plt.show()
+
+index = int(input("index: "))
+prediction_probs, prediction, answer = create_prediction(index)
+display_image(index, prediction, answer)
+display_predictions(prediction, prediction_probs, answer)
