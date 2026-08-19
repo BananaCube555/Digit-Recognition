@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.datasets import load_digits
+import math
 
 digits = load_digits() 
 norm_data = digits.data / 16
@@ -74,17 +75,23 @@ def display_predictions(prediction, predictions_probs, answer):
     plt.show()
 
 
-index = int(input("index: "))
-prediction_probs, prediction, answer = create_prediction(index)
-display_image(index, prediction, answer)
-display_predictions(prediction, prediction_probs, answer)
+# index = int(input("index: "))
+# prediction_probs, prediction, answer = create_prediction(index)
+# display_image(index, prediction, answer)
+# display_predictions(prediction, prediction_probs, answer)
 
-loss = []
+
+correct_class_preds = []
+
 for index in range(1797):
     current_image_probs = probs[index]
     ans = digits.target[index]
     pred_for_ans = current_image_probs[ans]
 
-    # pred_for_ans = (probs[index])[ans]
-    
-        
+    correct_class_preds.append(pred_for_ans)
+
+    # pred_for_ans = (probs[index])[(digits.target[index])]
+
+losses = -np.log(correct_class_preds)
+
+print(losses)
