@@ -79,3 +79,12 @@ prediction_probs, prediction, answer = create_prediction(index)
 display_image(index, prediction, answer)
 display_predictions(prediction, prediction_probs, answer)
 
+loss = []
+for index in range(1797):
+    current_image_probs = probs[index]
+    ans = digits.target[index]
+    pred_for_ans = current_image_probs[ans]
+
+    # pred_for_ans = (probs[index])[ans]
+    
+        
