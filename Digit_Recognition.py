@@ -80,17 +80,20 @@ def display_predictions(prediction, predictions_probs, answer):
 # display_image(index, prediction, answer)
 # display_predictions(prediction, prediction_probs, answer)
 # -- BROKEN LOGIG FOR LOSS CALC FUNCTION--
-def Loss_Calculation(probs,ans):
+def Loss_Calculation(probs, ans):
     
     correct_class_preds = []
 
-    for index in range(1797):
+    for index in range(1797): # TODO: Implement a non loop way 
         current_image_probs = probs[index]
-        pred_for_ans = current_image_probs[ans]
+        pred_for_ans = current_image_probs[ans[index]]
 
         correct_class_preds.append(pred_for_ans)
 
     losses = -np.log(correct_class_preds)
     return losses
+
+
 all_answers = digits.target
-Loss_Calc...(probs, all..)
+
+Loss_Calculation(probs, all_answers)
