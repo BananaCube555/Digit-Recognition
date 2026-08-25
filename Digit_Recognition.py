@@ -97,3 +97,15 @@ def Loss_Calculation(probs, ans):
 all_answers = digits.target
 
 Loss_Calculation(probs, all_answers)
+
+# -- NOT FINISHED OR IMPROVED--
+def calculate_gradient(weight, loss_function, h=0.0001):
+
+    old_loss = loss_function(weight)
+
+    weight += h
+    new_loss = loss_function(weight)
+
+    gradient = (new_loss - old_loss) / h
+
+    return gradient
