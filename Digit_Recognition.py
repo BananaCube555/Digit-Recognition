@@ -95,16 +95,22 @@ all_answers = digits.target
 losses, avr_loss = Loss_Calculation(probs, all_answers)
 
 
-def calculate_gradient(weights, h=0.0001):
+def calculate_gradient(layer, row, col, h=0.0001):
 
-    weight += h
-    # new_probs = 
-    
-    old_loss = losses
-    new_loss = Loss_Calculation()
+    old_loss = avr_loss
+
+    layer.w[row][col] += h
+
+    y1 = relu(l1.forward(norm_data))
+    y2 = relu(l2.forward(y1))
+    y3 = l3.forward(y2)
+
+    probs = SoftMax(y3)
+
+    losses, new_loss = Loss_Calculation(probs, all_answers)
+
     gradient = (new_loss - old_loss) / h
 
-    
-    return gradient
+    layer.w[row][col] -= h
 
-calc_grad(l3.w, 
+    return gradient
