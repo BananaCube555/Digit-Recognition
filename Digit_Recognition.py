@@ -9,8 +9,8 @@ norm_data = digits.data / 16
 
 
 class Layer:
-    def __init__(self, w, b, ):
-        self.w = np.random.rand(*w) * 0.01 # *w to unload the tuple, input needs 2 numbers
+    def __init__(self, w, b):
+        self.w = np.random.rand(*w) * 0.01
         self.b = np.zeros((b)) 
 
     def forward(self, data):
@@ -52,8 +52,8 @@ probs = SoftMax(y3)
 
 def create_prediction(index):
     prediction_probs = probs[index]
-    prediction = np.argmax(prediction_probs) # Returns the index of the largest probability
-    answer = digits.target[index] # Actual digit label for image x
+    prediction = np.argmax(prediction_probs)
+    answer = digits.target[index]
 
     return prediction_probs, prediction, answer
 
@@ -67,7 +67,7 @@ def display_image(index, prediction, answer):
 #  -- DISPLAY PREDICTIONS --
 def display_predictions(prediction, predictions_probs, answer):
 
-    categories = np.arange(0, 10) # Generates numbers from 0 to 9
+    categories = np.arange(0, 10)
 
     plt.bar(categories , predictions_probs)
     plt.title(f"Prediction: {prediction} Actual: {answer}")
@@ -75,37 +75,34 @@ def display_predictions(prediction, predictions_probs, answer):
     plt.show()
 
 
-# index = int(input("index: "))
-# prediction_probs, prediction, answer = create_prediction(index)
-# display_image(index, prediction, answer)
-# display_predictions(prediction, prediction_probs, answer)
-# -- BROKEN LOGIG FOR LOSS CALC FUNCTION--
 def Loss_Calculation(probs, ans):
     
     correct_class_preds = []
 
-    for index in range(1797): # TODO: Implement a non loop way 
+    for index in range(1797):
         current_image_probs = probs[index]
         pred_for_ans = current_image_probs[ans[index]]
 
         correct_class_preds.append(pred_for_ans)
 
     losses = -np.log(correct_class_preds)
-    return losses
+    avr_loss = np.average(losses)
+    return losses, avr_loss
 
 
 all_answers = digits.target
 
-Loss_Calculation(probs, all_answers)
+losses, avr_loss = Loss_Calculation(probs, all_answers)
 
-# -- NOT FINISHED OR IMPROVED--
-def calculate_gradient(weight, loss_function, h=0.0001):
 
-    old_loss = loss_function(weight)
+def calculate_gradient(weights, loss_func, h=0.0001):
+
+    old_loss = loss_func()
 
     weight += h
-    new_loss = loss_function(weight)
+    new_loss = loss_func()
 
     gradient = (new_loss - old_loss) / h
 
+    
     return gradient
