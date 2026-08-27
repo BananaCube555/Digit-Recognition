@@ -95,14 +95,16 @@ all_answers = digits.target
 losses, avr_loss = Loss_Calculation(probs, all_answers)
 
 
-def calculate_gradient(weights, loss_func, h=0.0001):
-
-    old_loss = loss_func()
+def calculate_gradient(weights, h=0.0001):
 
     weight += h
-    new_loss = loss_func()
-
+    # new_probs = 
+    
+    old_loss = losses
+    new_loss = Loss_Calculation()
     gradient = (new_loss - old_loss) / h
 
     
     return gradient
+
+calc_grad(l3.w, 
