@@ -9,8 +9,8 @@ norm_data = digits.data / 16
 
 
 class Layer:
-    def __init__(self, w, b, ):
-        self.w = np.random.rand(*w) * 0.01 # *w to unload the tuple, input needs 2 numbers
+    def __init__(self, w, b):
+        self.w = np.random.rand(*w) * 0.01
         self.b = np.zeros((b)) 
 
     def forward(self, data):
@@ -52,8 +52,8 @@ probs = SoftMax(y3)
 
 def create_prediction(index):
     prediction_probs = probs[index]
-    prediction = np.argmax(prediction_probs) # Returns the index of the largest probability
-    answer = digits.target[index] # Actual digit label for image x
+    prediction = np.argmax(prediction_probs)
+    answer = digits.target[index]
 
     return prediction_probs, prediction, answer
 
@@ -67,7 +67,7 @@ def display_image(index, prediction, answer):
 #  -- DISPLAY PREDICTIONS --
 def display_predictions(prediction, predictions_probs, answer):
 
-    categories = np.arange(0, 10) # Generates numbers from 0 to 9
+    categories = np.arange(0, 10)
 
     plt.bar(categories , predictions_probs)
     plt.title(f"Prediction: {prediction} Actual: {answer}")
@@ -80,25 +80,62 @@ def display_predictions(prediction, predictions_probs, answer):
 # display_image(index, prediction, answer)
 # display_predictions(prediction, prediction_probs, answer)
 
-def loss_calculation():
-    
+def Loss_Calculation(probs, ans):
+
     correct_class_preds = []
 
     for index in range(1797):
         current_image_probs = probs[index]
-        ans = digits.target[index]  
-        pred_for_ans = current_image_probs[ans]
+        pred_for_ans = current_image_probs[ans[index]]
 
-        correct_class_preds.append()
-
-        # pred_for_ans = (probs[index])[(digits.target[index])]
-        
+        correct_class_preds.append(pred_for_ans)
 
     losses = -np.log(correct_class_preds)
     avr_loss = np.average(losses)
     return losses, avr_loss
 
-losses, avr_loss = loss_calculation()
 
-print(losses)
-print(avr_loss)
+all_answers = digits.target
+
+losses, avr_loss = Loss_Calculation(probs, all_answers)
+
+def calculate_gradient(layer, row, col, h=0.0001):
+
+    old_loss = avr_loss
+
+    layer.w[row][col] += h
+
+    y1 = relu(l1.forward(norm_data))
+    y2 = relu(l2.forward(y1))
+    y3 = l3.forward(y2)
+
+    probs = SoftMax(y3)
+
+    losses, new_loss = Loss_Calculation(probs, all_answers)
+
+    gradient = (new_loss - old_loss) / h
+
+    layer.w[row][col] -= h
+
+    return gradient
+
+def calculate_gradients(layer):
+
+    gradients = np.zeros_like(layer.w)
+
+    for row in range(layer.w.shape[0]):
+        for col in range(layer.w.shape[1]):
+            gradients[row][col] = calculate_gradient(layer, row, col)
+
+    return gradients
+
+
+l1_gradients = calculate_gradients(l1)
+l2_gradients = calculate_gradients(l2)
+l3_gradients = calculate_gradients(l3)
+
+learning_rate = 0.1
+
+l1.w -= learning_rate * l1_gradients
+l2.w -= learning_rate * l2_gradients
+l3.w -= learning_rate * l3_gradients
