@@ -109,6 +109,8 @@ all_answers = digits.target
 losses, avr_loss = Loss_Calculation(probs, all_answers)
 
 # -- GRADIENT --
+
+# Proggress of remake of first version of calc_gradient
 def calculate_gradient(layer_name, row, col, change_of_weight, old_loss):
 
     layer_name.w[row][col] += change_of_weight
@@ -145,7 +147,7 @@ def calculate_gradients(layer):
 
     return gradients
 
-
+# Temporary 
 l1_gradients = calculate_gradients(l1)
 l2_gradients = calculate_gradients(l2)
 l3_gradients = calculate_gradients(l3)
