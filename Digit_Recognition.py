@@ -31,6 +31,15 @@ def SoftMax(x):
         
     return x
 
+def forward_Calc(data, layers):
+    
+        y1 = relu(layers[0].forward(data))
+        y2 = relu(layers[1].forward(y1))
+        y3 = (layers[2].forward(y2))
+
+        return y1, y2 , y3
+    
+
 l1 = Layer((64,32), (1,32))
 y1 = l1.forward(norm_data)
 
@@ -99,6 +108,12 @@ all_answers = digits.target
 
 losses, avr_loss = Loss_Calculation(probs, all_answers)
 
+# -- GRADIENT --
+def calculate_gradient(layer_name, row, col, change_of_weight, old_loss):
+
+    layer_name.w[row][col] += change_of_weight
+
+
 def calculate_gradient(layer, row, col, h=0.0001):
 
     old_loss = avr_loss
@@ -118,6 +133,7 @@ def calculate_gradient(layer, row, col, h=0.0001):
     layer.w[row][col] -= h
 
     return gradient
+
 
 def calculate_gradients(layer):
 
@@ -139,3 +155,6 @@ learning_rate = 0.1
 l1.w -= learning_rate * l1_gradients
 l2.w -= learning_rate * l2_gradients
 l3.w -= learning_rate * l3_gradients
+
+print("Complete")
+
