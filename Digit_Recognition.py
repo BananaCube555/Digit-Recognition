@@ -115,36 +115,19 @@ def forward_Calc(data, layers):
 
 # layer_name = l3, change_of_weight = 0.0001, old_loss = avr_loss, layer_names = [l1,l2,l3], answer = digits.target or all_answers
 
-def calculate_gradient(layer_name, row, col, change_of_weight, old_loss, layer_names, data, answers): 
+def calculate_gradient(layer_name, row, col, change_of_weight, old_loss, data, layer_names, answers): 
     layer_name.w[row][col] += change_of_weight
 
-    y1, y2, y3 = forward_Calc(layer_names, data)
+    y1, y2, y3 = forward_Calc(data,layer_names)
     probs = SoftMax(y3)
 
     new_losses, new_avr_loss = Loss_Calculation(probs, answers)
 
-    new_gradient = (new_avr_loss - old_loss)
+    new_gradient = (new_avr_loss - old_loss) / change_of_weight
 
+    layer_name.w[row][col] -= change_of_weight
 
-def calculate_gradient(layer, row, col, h=0.0001):
-
-    old_loss = avr_loss
-
-    layer.w[row][col] += h
-
-    y1 = relu(l1.forward(norm_data))
-    y2 = relu(l2.forward(y1))
-    y3 = l3.forward(y2)
-
-    probs = SoftMax(y3)
-
-    losses, new_loss = Loss_Calculation(probs, all_answers)
-
-    gradient = (new_loss - old_loss) / h
-
-    layer.w[row][col] -= h
-
-    return gradient
+    return new_gradient
 
 
 def calculate_gradients(layer):
