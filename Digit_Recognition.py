@@ -30,14 +30,6 @@ def SoftMax(x):
     x = x / sums
         
     return x
-
-def forward_Calc(data, layers):
-    
-        y1 = relu(layers[0].forward(data))
-        y2 = relu(layers[1].forward(y1))
-        y3 = (layers[2].forward(y2))
-
-        return y1, y2 , y3
     
 
 l1 = Layer((64,32), (1,32))
@@ -59,7 +51,7 @@ probs = SoftMax(y3)
 # VISUALIZATION 
 # =========================
 
-def create_prediction(index):
+def create_prediction(index, ):
     prediction_probs = probs[index]
     prediction = np.argmax(prediction_probs)
     answer = digits.target[index]
@@ -110,10 +102,28 @@ losses, avr_loss = Loss_Calculation(probs, all_answers)
 
 # -- GRADIENT --
 
-# Proggress of remake of first version of calc_gradient
-def calculate_gradient(layer_name, row, col, change_of_weight, old_loss):
 
+def forward_Calc(data, layers):
+    
+        y1 = relu(layers[0].forward(data))
+        y2 = relu(layers[1].forward(y1))
+        y3 = (layers[2].forward(y2))
+
+        return y1, y2 , y3
+
+# Proggress of remake of first version of calc_gradient
+
+# layer_name = l3, change_of_weight = 0.0001, old_loss = avr_loss, layer_names = [l1,l2,l3], answer = digits.target or all_answers
+
+def calculate_gradient(layer_name, row, col, change_of_weight, old_loss, layer_names, data, answers): 
     layer_name.w[row][col] += change_of_weight
+
+    y1, y2, y3 = forward_Calc(layer_names, data)
+    probs = SoftMax(y3)
+
+    new_losses, new_avr_loss = Loss_Calculation(probs, answers)
+
+    new_gradient = (new_avr_loss - old_loss)
 
 
 def calculate_gradient(layer, row, col, h=0.0001):
