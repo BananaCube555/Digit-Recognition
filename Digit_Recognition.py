@@ -131,12 +131,13 @@ def calculate_gradient(layer_name, row, col, change_of_weight, old_loss, data, l
 
 
 def calculate_gradients(layer):
+    
+    gradients = np.zeros_like(layer.w) #Creates a matrix of zeros in the shape of layer.w
 
-    gradients = np.zeros_like(layer.w)
-
-    for row in range(layer.w.shape[0]):
-        for col in range(layer.w.shape[1]):
-            gradients[row][col] = calculate_gradient(layer, row, col)
+    
+    for row in range(layer.w.shape[0]): # for row in range(16)
+        for col in range(layer.w.shape[1]): # for col in range(10)
+            gradients[row][col] = calculate_gradient(layer, row, col, change_of_weight=0.0001, old_loss=avr_loss, data=norm_data ,layer_names=[l1,l2,l3], answers=digits.target ) 
 
     return gradients
 
