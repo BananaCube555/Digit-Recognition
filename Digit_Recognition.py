@@ -153,4 +153,5 @@ l2.w -= learning_rate * l2_gradients
 l3.w -= learning_rate * l3_gradients
 
 print("Complete")
+print("Test")
 
