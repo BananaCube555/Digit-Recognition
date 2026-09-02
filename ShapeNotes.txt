@@ -7,3 +7,6 @@ FOWARD PASS output shape (1797, 32)
 Weights shape (32,16)
 Bias shape (1,16)
 
+FOWARD PASS output shape (1797, 16)
+Weights shape (16,10)
+Bias shape (1,10)
