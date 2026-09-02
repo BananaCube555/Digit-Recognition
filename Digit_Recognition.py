@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.datasets import load_digits
-import math
+
 
 digits = load_digits() 
 norm_data = digits.data / 16
