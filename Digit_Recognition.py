@@ -98,7 +98,7 @@ def Loss_Calculation(probs, ans):
 
 all_answers = digits.target
 
-losses, avr_loss = Loss_Calculation(probs, all_answers)
+losses, old_loss = Loss_Calculation(probs, all_answers)
 
 # -- GRADIENT --
 
@@ -113,7 +113,7 @@ def forward_Calc(data, layers):
 
 # Proggress of remake of first version of calc_gradient
 
-# layer_name = l3, change_of_weight = 0.0001, old_loss = avr_loss, layer_names = [l1,l2,l3], answer = digits.target or all_answers
+# layer_name = l3, change_of_weight = 0.0001, old_loss = old_loss, layer_names = [l1,l2,l3], answer = digits.target or all_answers
 
 def calculate_gradient(layer_name, row, col, change_of_weight, old_loss, data, layer_names, answers): 
     layer_name.w[row][col] += change_of_weight
@@ -137,21 +137,38 @@ def calculate_gradients(layer):
     
     for row in range(layer.w.shape[0]): # for row in range(16)
         for col in range(layer.w.shape[1]): # for col in range(10)
-            gradients[row][col] = calculate_gradient(layer, row, col, change_of_weight=0.0001, old_loss=avr_loss, data=norm_data ,layer_names=[l1,l2,l3], answers=digits.target ) 
+            gradients[row][col] = calculate_gradient(layer, row, col, change_of_weight=0.0001, old_loss=old_loss, data=norm_data ,layer_names=[l1,l2,l3], answers=digits.target ) 
 
     return gradients
 
-# Temporary 
-l1_gradients = calculate_gradients(l1)
-l2_gradients = calculate_gradients(l2)
-l3_gradients = calculate_gradients(l3)
+
+    
+
+# --TRAINING--
 
 learning_rate = 0.1
 
-l1.w -= learning_rate * l1_gradients
-l2.w -= learning_rate * l2_gradients
-l3.w -= learning_rate * l3_gradients
+# avr_loss, 
 
-print("Complete")
-print("Test")
+for step in range(10):
+    
+    
+    l1_gradients = calculate_gradients(l1)
+    l2_gradients = calculate_gradients(l2)
+    l3_gradients = calculate_gradients(l3)
 
+    l1.w -= learning_rate * l1_gradients
+    l2.w -= learning_rate * l2_gradients
+    l3.w -= learning_rate * l3_gradients
+
+    # Runs the layers and calculates the loss
+    y1, y2, y3 = forward_Calc(norm_data, [l1,l2,l3])
+    y3 = SoftMax(y3)
+    
+    new_losses, new_avr_loss = Loss_Calculation(y3, all_answers)
+
+    print(step, new_avr_loss)
+
+    old_loss = new_avr_loss # The loss that got calculated is now old or current loss for the next iteration
+
+   
