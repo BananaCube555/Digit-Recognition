@@ -167,8 +167,6 @@ for step in range(10):
     
     new_losses, new_avr_loss = Loss_Calculation(y3, all_answers)
 
-    print(step, new_avr_loss)
+    print(step, new_avr_loss) # prints current number of loop and the loss
 
     old_loss = new_avr_loss # The loss that got calculated is now old or current loss for the next iteration
-
-   
