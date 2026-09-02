@@ -172,4 +172,6 @@ for step in range(10):
     old_loss = new_avr_loss # The loss that got calculated is now old or current loss for the next iteration
 
 
+
 print("test")
+
