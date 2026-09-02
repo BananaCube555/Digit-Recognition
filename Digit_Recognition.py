@@ -170,3 +170,5 @@ for step in range(10):
     print(step, new_avr_loss) # prints current number of loop and the loss
 
     old_loss = new_avr_loss # The loss that got calculated is now old or current loss for the next iteration
+
+print("test")
