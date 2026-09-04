@@ -31,27 +31,29 @@ def SoftMax(x):
         
     return x
     
+# Runs the network
 
-l1 = Layer((64,32), (1,32))
-y1 = l1.forward(norm_data)
+# l1 = Layer((64,32), (1,32))
+# y1 = l1.forward(norm_data)
 
-y1 = relu(y1)
+# y1 = relu(y1)
 
-l2 = Layer((32,16), (1,16))
-y2 = l2.forward(y1)
+# l2 = Layer((32,16), (1,16))
+# y2 = l2.forward(y1)
 
-y2 = relu(y2)
+# y2 = relu(y2)
 
-l3 = Layer((16,10), (1,10))
-y3 = l3.forward(y2)
+# l3 = Layer((16,10), (1,10))
+# y3 = l3.forward(y2)
 
-probs = SoftMax(y3)
+# probs = SoftMax(y3)
+
 
 # =========================
 # VISUALIZATION 
 # =========================
 
-def create_prediction(index):
+def create_prediction(index, probs):
     prediction_probs = probs[index]
     prediction = np.argmax(prediction_probs)
     answer = digits.target[index]
@@ -98,5 +100,5 @@ def Loss_Calculation(probs, ans):
 
 all_answers = digits.target
 
-losses, old_loss = Loss_Calculation(probs, all_answers)
+
 
