@@ -2,6 +2,8 @@
 # VISUALIZATION 
 # =========================
 
+import matplotlib.pyplot as plt
+
 # def create_prediction(index, probs):
 #     prediction_probs = probs[index]
 #     prediction = np.argmax(prediction_probs)
