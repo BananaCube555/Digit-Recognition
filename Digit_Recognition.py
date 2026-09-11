@@ -32,20 +32,20 @@ def SoftMax(x):
     
 # Runs the network
 
-# l1 = Layer((64,32), (1,32))
-# y1 = l1.forward(norm_data)
+l1 = Layer((64,32), (1,32))
+y1 = l1.forward(norm_data)
 
-# y1 = relu(y1)
+y1 = relu(y1)
 
-# l2 = Layer((32,16), (1,16))
-# y2 = l2.forward(y1)
+l2 = Layer((32,16), (1,16))
+y2 = l2.forward(y1)
 
-# y2 = relu(y2)
+y2 = relu(y2)
 
-# l3 = Layer((16,10), (1,10))
-# y3 = l3.forward(y2)
+l3 = Layer((16,10), (1,10))
+y3 = l3.forward(y2)
 
-# probs = SoftMax(y3)
+probs = SoftMax(y3)
 
 
 def Loss_Calculation(probs, ans):
@@ -66,9 +66,17 @@ def Loss_Calculation(probs, ans):
 all_answers = digits.target
 
 
-def one_hot_vector_answers(answers):
+def one_hot_answers_func(answers):
     one_hot_answers = np.zeros((1797, 10))
     
-    for i in answers:
-        pass
+    for index, value in enumerate(answers):
+        one_hot_answer = np.zeros(10)
+        one_hot_answer[value] = 1
+        one_hot_answers[index] = one_hot_answer
 
+    return one_hot_answers
+
+        
+one_hot_answers = one_hot_answers_func(all_answers)
+
+print(one_hot_answers)
