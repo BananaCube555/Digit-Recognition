@@ -66,3 +66,9 @@ def Loss_Calculation(probs, ans):
 all_answers = digits.target
 
 
+def one_hot_vector_answers(answers):
+    one_hot_answers = np.zeros((1797, 10))
+    
+    for i in answers:
+        pass
+
