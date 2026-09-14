@@ -65,7 +65,7 @@ def Loss_Calculation(probs, ans):
 
 all_answers = digits.target
 
-
+# makes the answers like this so we can calculate their gradient with probs
 def one_hot_answers_func(answers):
     one_hot_answers = np.zeros((1797, 10))
     
@@ -79,4 +79,14 @@ def one_hot_answers_func(answers):
         
 one_hot_answers = one_hot_answers_func(all_answers)
 
-print(one_hot_answers)
+#softmax-y3 = probs
+
+w1 = l1.w
+w2 = l2.w
+w3 = l3.w
+
+dL_dy3 = probs - one_hot_answers #get y3 gradients
+
+
+dL_dy3_w = dL_dy3 * (y3/w3) # get direct reletionship between w(eights)3 and loss by deviding the 2 gradients 
+
