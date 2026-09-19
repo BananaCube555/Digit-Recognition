@@ -87,6 +87,6 @@ w3 = l3.w
 
 dL_dy3 = probs - one_hot_answers #get y3 gradients
 
-
-dL_dy3_w = dL_dy3 * (y3/w3) # get direct reletionship between w(eights)3 and loss by deviding the 2 gradients 
+#Logic is incorrect
+# dL_dy3_w = dL_dy3 * y2  get direct reletionship between w(eights)3 and loss by deviding the 2 gradients 
 
