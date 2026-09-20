@@ -90,4 +90,4 @@ dL_dy3 = probs - one_hot_answers #get y3 gradients
 # transpose y2 so its dimensions line up for the matrix multiplication
 dL_dW3 = y2.T @ dL_dy3 / 1797
 
-
+dL_dy2 = dL_dy3 @ w3.T
