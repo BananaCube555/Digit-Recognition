@@ -87,6 +87,7 @@ w3 = l3.w
 
 dL_dy3 = probs - one_hot_answers #get y3 gradients
 
-#Logic is incorrect
-# dL_dy3_w = dL_dy3 * y2  get direct reletionship between w(eights)3 and loss by deviding the 2 gradients 
+# transpose y2 so its dimensions line up for the matrix multiplication
+dL_dW3 = y2.T @ dL_dy3 / 1797
+
 
