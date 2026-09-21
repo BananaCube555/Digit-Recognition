@@ -100,3 +100,12 @@ dL_dW2 = y1.T @ dL_dz2 / 1797
 dL_dy1 = dL_dz2 @ w2.T
 dL_dz1 = dL_dy1 * (y1 > 0)
 dL_dW1 = norm_data.T @ dL_dz1 / 1797
+
+
+# devided with the gradient decides how big the change is 
+learning_rate = 0.1
+
+# we use subtraction bc it works for both positive and negative numbers wthout needing extra checks
+w3 -= learning_rate * dL_dW3
+w2 -= learning_rate * dL_dW2
+w1 -= learning_rate * dL_dW1
