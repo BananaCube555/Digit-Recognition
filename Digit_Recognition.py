@@ -96,3 +96,7 @@ dL_dy2 = dL_dy3 @ w3.T
 dL_dz2 = dL_dy2 * (y2 > 0)
 
 dL_dW2 = y1.T @ dL_dz2 / 1797
+
+dL_dy1 = dL_dz2 @ w2.T
+dL_dz1 = dL_dy1 * (y1 > 0)
+dL_dW1 = norm_data.T @ dL_dz1 / 1797
