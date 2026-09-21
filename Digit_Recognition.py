@@ -91,3 +91,8 @@ dL_dy3 = probs - one_hot_answers #get y3 gradients
 dL_dW3 = y2.T @ dL_dy3 / 1797
 
 dL_dy2 = dL_dy3 @ w3.T
+
+# (y2 > 0) is for the ReLU after l2 if the 
+dL_dz2 = dL_dy2 * (y2 > 0)
+
+dL_dW2 = y1.T @ dL_dz2 / 1797
