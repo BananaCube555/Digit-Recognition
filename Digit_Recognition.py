@@ -22,7 +22,7 @@ def relu(y):
     return y  
 
 
-def SoftMax(x):
+def softMax(x):
     largestnum_x = np.max(x, axis=1, keepdims=True)
     x = x - largestnum_x
     x = np.exp(x)
@@ -37,19 +37,23 @@ l1 = Layer((64,32), (1,32))
 l2 = Layer((32,16), (1,16))
 l3 = Layer((16,10), (1,10))
 
-
-y1 = l1.forward(norm_data)
-y1 = relu(y1)
-
-
-y2 = l2.forward(y1)
-y2 = relu(y2)
-
-y3 = l3.forward(y2)
-probs = SoftMax(y3)
+def forward_pass(l1,l2,l3, data):
+    y1 = l1.forward(data)
+    y1 = relu(y1)
 
 
-def Loss_Calculation(probs, ans):
+    y2 = l2.forward(y1)
+    y2 = relu(y2)
+
+    y3 = l3.forward(y2)
+    probs = softMax(y3)
+
+    return y1, y2, y3, probs
+
+y1,y2,y3,probs = forward_pass(l1, l2, l3, norm_data)
+
+
+def loss_calculation(probs, ans):
 
     correct_class_preds = []
 
@@ -65,7 +69,7 @@ def Loss_Calculation(probs, ans):
 
 all_answers = digits.target
 
-losses, avr_loss = Loss_Calculation(probs, all_answers)
+losses, avr_loss = loss_calculation(probs, all_answers)
 
 print("Before:", avr_loss)
 
@@ -91,3 +95,9 @@ learning_rate = 0.1
 l3.w -= learning_rate * dL_dW3
 l2.w -= learning_rate * dL_dW2
 l1.w -= learning_rate * dL_dW1
+
+# Runs the network
+y1,y2,y3,probs = forward_pass(l1, l2, l3, norm_data)
+
+new_losses, avr_new_loss = loss_calculation(probs, all_answers)
+print("After:", avr_new_loss)
