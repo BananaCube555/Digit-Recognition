@@ -103,3 +103,6 @@ new_losses, avr_new_loss = loss_calculation(probs, all_answers)
 print("After:", avr_new_loss)
 
 print("diffrence: ",avr_loss - avr_new_loss)
+
+
+print("Test")
