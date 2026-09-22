@@ -105,4 +105,4 @@ print("After:", avr_new_loss)
 print("diffrence: ",avr_loss - avr_new_loss)
 
 
-print("Test")
+print("Test 2")
