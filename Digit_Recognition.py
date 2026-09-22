@@ -62,8 +62,12 @@ def Loss_Calculation(probs, ans):
     avr_loss = np.average(losses)
     return losses, avr_loss
 
-
 all_answers = digits.target
+
+losses, avr_loss = Loss_Calculation(probs, all_answers)
+
+print("Before:", avr_loss)
+
 
 # makes the answers like this so we can calculate their gradient with probs
 def one_hot_answers_func(answers):
@@ -105,7 +109,25 @@ dL_dW1 = norm_data.T @ dL_dz1 / 1797
 # devided with the gradient decides how big the change is 
 learning_rate = 0.1
 
+# Change the weights
 # we use subtraction bc it works for both positive and negative numbers wthout needing extra checks
 w3 -= learning_rate * dL_dW3
 w2 -= learning_rate * dL_dW2
 w1 -= learning_rate * dL_dW1
+
+
+# Runs the network agian with the new weights
+y1 = l1.forward(norm_data)
+y1 = relu(y1)
+
+y2 = l2.forward(y1)
+y2 = relu(y2)
+
+y3 = l3.forward(y2)
+
+probs = SoftMax(y3)
+
+
+losses, avr_loss = Loss_Calculation(probs, all_answers)
+
+print("After", avr_loss)
