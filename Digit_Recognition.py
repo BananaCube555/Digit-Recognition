@@ -101,3 +101,5 @@ y1,y2,y3,probs = forward_pass(l1, l2, l3, norm_data)
 
 new_losses, avr_new_loss = loss_calculation(probs, all_answers)
 print("After:", avr_new_loss)
+
+print("diffrence: ",avr_loss - avr_new_loss)
