@@ -88,21 +88,22 @@ def one_hot_answers_func(answers):
         
 one_hot_answers = one_hot_answers_func(all_answers)
 
-dL_dW1, dL_dW2, dL_dW3 = backward_pass(y1, y2, probs, one_hot_answers, norm_data, l2.w, l3.w)
 
 learning_rate = 0.1
 
-l3.w -= learning_rate * dL_dW3
-l2.w -= learning_rate * dL_dW2
-l1.w -= learning_rate * dL_dW1
+diff_losses = []
 
-# Runs the network
-y1,y2,y3,probs = forward_pass(l1, l2, l3, norm_data)
+for i in range(1000):
+    y1,y2,y3,probs = forward_pass(l1, l2, l3, norm_data)
 
-new_losses, avr_new_loss = loss_calculation(probs, all_answers)
-print("After:", avr_new_loss)
+    new_loss, avr_new_loss = loss_calculation(probs, all_answers)
+    diff_losses.append(new_loss)
 
-print("diffrence: ",avr_loss - avr_new_loss)
+    dL_dW1, dL_dW2, dL_dW3 = backward_pass(y1, y2, probs, one_hot_answers, norm_data, l2.w, l3.w)
 
+    l3.w -= learning_rate * dL_dW3
+    l2.w -= learning_rate * dL_dW2
+    l1.w -= learning_rate * dL_dW1
 
-print("Test 2")
+    print(i, avr_new_loss)
+
