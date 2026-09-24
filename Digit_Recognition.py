@@ -93,7 +93,9 @@ learning_rate = 0.1
 
 diff_losses = []
 
-for i in range(1000):
+for i in range(10000):
+
+
     y1,y2,y3,probs = forward_pass(l1, l2, l3, norm_data)
 
     new_loss, avr_new_loss = loss_calculation(probs, all_answers)
@@ -105,5 +107,10 @@ for i in range(1000):
     l2.w -= learning_rate * dL_dW2
     l1.w -= learning_rate * dL_dW1
 
-    print(i, avr_new_loss)
+    if i % 100 == 0:
+            print(i, avr_new_loss)
 
+predictions = np.argmax(probs, axis=1)
+
+accuracy = np.mean(predictions == all_answers)
+print("Accuracy:", accuracy)
