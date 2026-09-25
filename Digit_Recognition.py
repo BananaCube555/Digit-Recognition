@@ -88,29 +88,49 @@ def one_hot_answers_func(answers):
         
 one_hot_answers = one_hot_answers_func(all_answers)
 
-
 learning_rate = 0.1
+iterations = 10000
 
 diff_losses = []
 
-for i in range(10000):
+for i in range(iterations):
 
-
-    y1,y2,y3,probs = forward_pass(l1, l2, l3, norm_data)
+    y1, y2, y3, probs = forward_pass(l1, l2, l3, norm_data)
 
     new_loss, avr_new_loss = loss_calculation(probs, all_answers)
-    diff_losses.append(new_loss)
+    diff_losses.append(avr_new_loss)
 
-    dL_dW1, dL_dW2, dL_dW3 = backward_pass(y1, y2, probs, one_hot_answers, norm_data, l2.w, l3.w)
+    dL_dW1, dL_dW2, dL_dW3 = backward_pass(
+        y1, y2, probs, one_hot_answers, norm_data, l2.w, l3.w
+    )
 
     l3.w -= learning_rate * dL_dW3
     l2.w -= learning_rate * dL_dW2
     l1.w -= learning_rate * dL_dW1
 
-    if i % 100 == 0:
-            print(i, avr_new_loss)
+    if i % 1000 == 0:
+        print("Iteration:", i, "Loss:", avr_new_loss)
+
+
+# Run the trained network one final time
+y1, y2, y3, probs = forward_pass(l1, l2, l3, norm_data)
+
+_, final_loss = loss_calculation(probs, all_answers) # we only need the second return of the func
+
+print("Final loss:", final_loss)
 
 predictions = np.argmax(probs, axis=1)
 
 accuracy = np.mean(predictions == all_answers)
 print("Accuracy:", accuracy)
+
+np.savez(
+    "model.npz",
+    l1_w=l1.w,
+    l1_b=l1.b,
+    l2_w=l2.w,
+    l2_b=l2.b,
+    l3_w=l3.w,
+    l3_b=l3.b
+)
+
