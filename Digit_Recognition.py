@@ -1,56 +1,25 @@
 import numpy as np
 from sklearn.datasets import load_digits
 from backpropagation import backward_pass
-
+from forward import relu, softMax, forward_pass, Layer
 
 digits = load_digits() 
 norm_data = digits.data / 16
 
 
+w1 = np.random.rand(64, 32) * 0.01
+w2 = np.random.rand(32, 16) * 0.01
+w3 = np.random.rand(16, 10) * 0.01
 
-class Layer:
-    def __init__(self, w, b):
-        self.w = np.random.rand(*w) * 0.01
-        self.b = np.zeros((b)) 
+b1 = np.zeros((1,32))
+b2 = np.zeros((1,16))
+b3 = np.zeros((1,10))
 
-    def forward(self, data):
-         y = data @ self.w + self.b
-         return y
-    
-def relu(y):
-    y = np.maximum(0,y)
-    return y  
+l1 = Layer(w1,b1)
+l2 = Layer(w2,b2)
+l3 = Layer(w3,b3)
 
-
-def softMax(x):
-    largestnum_x = np.max(x, axis=1, keepdims=True)
-    x = x - largestnum_x
-    x = np.exp(x)
-    sums = np.sum(x, axis=1, keepdims=True)
-    x = x / sums
-        
-    return x
-    
-# Runs the network
-
-l1 = Layer((64,32), (1,32))
-l2 = Layer((32,16), (1,16))
-l3 = Layer((16,10), (1,10))
-
-def forward_pass(l1,l2,l3, data):
-    y1 = l1.forward(data)
-    y1 = relu(y1)
-
-
-    y2 = l2.forward(y1)
-    y2 = relu(y2)
-
-    y3 = l3.forward(y2)
-    probs = softMax(y3)
-
-    return y1, y2, y3, probs
-
-y1,y2,y3,probs = forward_pass(l1, l2, l3, norm_data)
+y1,y2,y3,probs = forward_pass(l1,l2,l3,norm_data)
 
 
 def loss_calculation(probs, ans):
@@ -89,7 +58,7 @@ def one_hot_answers_func(answers):
 one_hot_answers = one_hot_answers_func(all_answers)
 
 learning_rate = 0.1
-iterations = 10000
+iterations = 100
 
 diff_losses = []
 
