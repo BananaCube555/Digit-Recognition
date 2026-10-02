@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.datasets import load_digits
 from sklearn.model_selection import train_test_split
 from forward import relu, softMax, forward_pass, Layer
-from Digit_Recognition import loss_calculation,one_hot_answers_func
+from Digit_Recognition import loss_calculation, one_hot_answers_func
 from backpropagation import backward_pass
 
 digits = load_digits() 
@@ -15,9 +15,8 @@ train_data, test_data, train_answers, test_answers = train_test_split(
 )
 
 train_data = train_data / 16
-train_answers = train_answers 
 test_data = test_data / 16
-test_answers = test_answers 
+
 
 
 # Run the network once 
@@ -34,21 +33,62 @@ l1 = Layer(w1, b1)
 l2 = Layer(w2,b2)
 l3 = Layer(w3,b3)
 
-learning_rate = 0.001
+learning_rate = 0.017
 
 one_hot_answers = one_hot_answers_func(train_answers)
 
-class training:
-    def __init__(self):
-        pass
+class Training:
+    def __init__(self,learning_rate,l1,l2,l3,training_data,training_answers,one_hot_answers):
+        self.learning_rate = learning_rate
+        self.training_data = training_data
+        self.training_answers = training_answers
+        self.one_hot_answers = one_hot_answers
+        self.l1 = l1
+        self.l2 = l2
+        self.l3 = l3
+        
+        
 
-    def train(self,learning_rate):
-        y1,y2,y3,probs = forward_pass(l1,l2,l3,train_data)
-        losses, avr_losss = loss_calculation(probs,train_answers)
-        dL_dW1, dL_dW2, dL_dW3 = backward_pass(y1, y2, probs, one_hot_answers, train_data, l2.w, l3.w)
+    def train(self, iterations):
+        for i in range(iterations):
 
-        # Update the weights
-        l3.w -= learning_rate * dL_dW3
-        l2.w -= learning_rate * dL_dW2
-        l1.w -= learning_rate * dL_dW1
+            y1,y2,y3,probs = forward_pass(self.l1,self.l2,self.l3,self.training_data)
 
+            losses, avr_losss = loss_calculation(probs,self.training_answers)
+
+            dL_dW1, dL_dW2, dL_dW3 = backward_pass(y1,y2,probs,self.one_hot_answers,self.training_data, self.l2.w, self.l3.w)
+
+            # Update the weights
+            self.l3.w -= self.learning_rate * dL_dW3
+            self.l2.w -= self.learning_rate * dL_dW2
+            self.l1.w -= self.learning_rate * dL_dW1
+
+            if i % 500 == 0:
+                            print("Iteration:", i, "Loss:", avr_losss)
+        return self.l1.w, self.l2.w, self.l3.w
+
+trainer = Training(
+    learning_rate,
+    l1,
+    l2,
+    l3,
+    train_data,
+    train_answers,
+    one_hot_answers
+)
+
+l1_w, l2_w, l3_w = trainer.train(10000)
+
+l1 = Layer(l1_w, b1)
+l2 = Layer(l2_w,b2)
+l3 = Layer(l3_w,b3)
+
+np.savez(
+    "model.npz",
+    l1_w=l1_w,
+    l1_b=b1,
+    l2_w=l2_w,
+    l2_b=b2,
+    l3_w=l3_w,
+    l3_b=b3
+)
