@@ -28,12 +28,22 @@ b1 = np.zeros((1,32))
 b2 = np.zeros((1,16))
 b3 = np.zeros((1,10))
 
+model = np.load("model.npz")
 
-l1 = Layer(w1, b1)
-l2 = Layer(w2,b2)
-l3 = Layer(w3,b3)
+l1_w = model["l1_w"]
+l1_b = model["l1_b"]
 
-learning_rate = 0.017
+l2_w = model["l2_w"]
+l2_b = model["l2_b"]
+
+l3_w = model["l3_w"]
+l3_b = model["l3_b"]
+
+l1 = Layer(l1_w, l1_b)
+l2 = Layer(l2_w,l2_b)
+l3 = Layer(l3_w,l3_b)
+
+learning_rate = 0.02
 
 one_hot_answers = one_hot_answers_func(train_answers)
 
@@ -69,9 +79,9 @@ class Training:
 
 trainer = Training(
     learning_rate,
-    l1,
-    l2,
-    l3,
+    l1_w,
+    l2_w,
+    l3_w,
     train_data,
     train_answers,
     one_hot_answers
@@ -82,6 +92,16 @@ l1_w, l2_w, l3_w = trainer.train(10000)
 l1 = Layer(l1_w, b1)
 l2 = Layer(l2_w,b2)
 l3 = Layer(l3_w,b3)
+
+T_y1, T_y2, T_y3, T_probs = forward_pass(l1, l2, l3, test_data)
+
+predictions = np.argmax(T_probs, axis=1)
+
+correct = predictions == test_answers
+
+accuracy = np.mean(correct)
+
+print("Accuracy:", accuracy * 100, "%")
 
 np.savez(
     "model.npz",
