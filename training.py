@@ -43,7 +43,7 @@ l1 = Layer(l1_w, l1_b)
 l2 = Layer(l2_w,l2_b)
 l3 = Layer(l3_w,l3_b)
 
-learning_rate = 0.02
+learning_rate = 0.023
 
 one_hot_answers = one_hot_answers_func(train_answers)
 
@@ -77,38 +77,46 @@ class Training:
                             print("Iteration:", i, "Loss:", avr_losss)
         return self.l1.w, self.l2.w, self.l3.w
 
-trainer = Training(
-    learning_rate,
-    l1_w,
-    l2_w,
-    l3_w,
-    train_data,
-    train_answers,
-    one_hot_answers
-)
 
-l1_w, l2_w, l3_w = trainer.train(10000)
+tinput = int(input("Train ? (1 YES, 0 NO) "))
 
-l1 = Layer(l1_w, b1)
-l2 = Layer(l2_w,b2)
-l3 = Layer(l3_w,b3)
+if tinput == 1:
+
+    trainer = Training(
+        learning_rate,
+        l1,
+        l2,
+        l3,
+        train_data,
+        train_answers,
+        one_hot_answers
+    )
+
+    l1_w, l2_w, l3_w = trainer.train(25000)
+
+    l1 = Layer(l1_w, l1_b)
+    l2 = Layer(l2_w, l2_b)
+    l3 = Layer(l3_w, l3_b)
+
+    np.savez(
+        "model.npz",
+        l1_w=l1_w,
+        l1_b=l1_b,
+        l2_w=l2_w,
+        l2_b=l2_b,
+        l3_w=l3_w,
+        l3_b=l3_b
+    )
+
+    
 
 T_y1, T_y2, T_y3, T_probs = forward_pass(l1, l2, l3, test_data)
 
 predictions = np.argmax(T_probs, axis=1)
 
-correct = predictions == test_answers
+correct = (predictions == test_answers) #[True, False, False, ....]
 
-accuracy = np.mean(correct)
+accuracy = np.mean(correct) #calc the avr of 0,1,0,0 True false ..
 
 print("Accuracy:", accuracy * 100, "%")
 
-np.savez(
-    "model.npz",
-    l1_w=l1_w,
-    l1_b=b1,
-    l2_w=l2_w,
-    l2_b=b2,
-    l3_w=l3_w,
-    l3_b=b3
-)
