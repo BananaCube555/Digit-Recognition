@@ -43,7 +43,7 @@ l1 = Layer(l1_w, l1_b)
 l2 = Layer(l2_w,l2_b)
 l3 = Layer(l3_w,l3_b)
 
-learning_rate = 0.023
+learning_rate = 0.3
 
 one_hot_answers = one_hot_answers_func(train_answers)
 
@@ -66,16 +66,20 @@ class Training:
 
             losses, avr_losss = loss_calculation(probs,self.training_answers)
 
-            dL_dW1, dL_dW2, dL_dW3 = backward_pass(y1,y2,probs,self.one_hot_answers,self.training_data, self.l2.w, self.l3.w)
+            dL_dW1, dL_dW2, dL_dW3, dL_dB1, dL_dB2, dL_dB3  = backward_pass(y1,y2,probs,self.one_hot_answers,self.training_data, self.l2.w, self.l3.w)
 
             # Update the weights
             self.l3.w -= self.learning_rate * dL_dW3
             self.l2.w -= self.learning_rate * dL_dW2
             self.l1.w -= self.learning_rate * dL_dW1
 
+            self.l3.b -= self.learning_rate * dL_dB3
+            self.l2.b -= self.learning_rate * dL_dB2
+            self.l1.b -= self.learning_rate * dL_dB1
+
             if i % 500 == 0:
                             print("Iteration:", i, "Loss:", avr_losss)
-        return self.l1.w, self.l2.w, self.l3.w
+        return self.l1.w, self.l2.w, self.l3.w, self.l1.b, self.l2.b, self.l3.b
 
 
 tinput = int(input("Train ? (1 YES, 0 NO) "))
@@ -92,7 +96,7 @@ if tinput == 1:
         one_hot_answers
     )
 
-    l1_w, l2_w, l3_w = trainer.train(25000)
+    l1_w, l2_w, l3_w, l1_b, l2_b, l3_b = trainer.train(15000)
 
     l1 = Layer(l1_w, l1_b)
     l2 = Layer(l2_w, l2_b)
