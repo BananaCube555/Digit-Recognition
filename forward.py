@@ -14,7 +14,7 @@ def relu(y):
     y = np.maximum(0,y)
     return y  
 
-
+#Turn raw data to probabilities
 def softMax(x):
     largestnum_x = np.max(x, axis=1, keepdims=True)
     x = x - largestnum_x
